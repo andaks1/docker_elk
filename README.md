@@ -117,6 +117,39 @@
 При проектировании кластера Elasticsearch нужно корректно рассчитывать количество реплик и шард,
 иначе возможна потеря данных индексов, вплоть до полной, при деградации системы.
 
+#### Ответ на задание 2.
+
+- список созданных индексов и их статусов:
+```BASH
+# curl -X GET "127.0.0.1:9200/_cat/indices/"
+green  open .geoip_databases LOiKcomCSrib0ntT2GVcJA 1 0 37 0 34.2mb 34.2mb
+green  open ind-1            xUW8qOBvR-WUphnrE4yLSA 1 0  0 0   227b   227b
+yellow open ind-3            Ddjq-5c9QO2d23vKgHrMtg 4 2  0 0   417b   417b
+yellow open ind-2            MXFs5Y5wQ9qUFaQZ8C196g 2 1  0 0   454b   454b
+```
+
+- состояние кластера:
+```JSON
+# curl -X GET "127.0.0.1:9200/_cluster/health?pretty"
+{
+  "cluster_name" : "elasticsearch",
+  "status" : "yellow",
+  "timed_out" : false,
+  "number_of_nodes" : 1,
+  "number_of_data_nodes" : 1,
+  "active_primary_shards" : 10,
+  "active_shards" : 10,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 10,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 50.0
+}
+```
+
 ## Задача 3
 
 В этом задании вы научитесь:
