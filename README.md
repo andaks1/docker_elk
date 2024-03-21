@@ -191,6 +191,69 @@ green open .geoip_databases LOiKcomCSrib0ntT2GVcJA 1 0 37 0 34.2mb 34.2mb
 
 - возможно, вам понадобится доработать `elasticsearch.yml` в части директивы `path.repo` и перезапустить `Elasticsearch`.
 
+#### Ответ на задание 3.
+
+- запрос API и результат вызова API для создания репозитория:
+```JSON
+# curl -X PUT "127.0.0.1:9200/_snapshot/netology_backup?pretty" -H 'Content-Type: application/json' -d'
+{
+  "type": "fs",
+  "settings": {
+    "location": "/etc/elasticsearch/snapshots"
+  }
+}
+'
+{
+  "acknowledged" : true
+}
+```
+
+- список индексов:
+```BASH
+# curl -X GET "127.0.0.1:9200/_cat/indices/"
+green open .geoip_databases LOiKcomCSrib0ntT2GVcJA 1 0 37 0 34.2mb 34.2mb
+green open test             KgjpiUuTTz6QGTQHD_FLqw 1 0  0 0   227b   227b
+```
+
+- список файлов в директории со snapshot:
+```BASH
+# ll snapshots/
+total 48
+-rw-r--r-- 1 elasticsearch elasticsearch  1425 Mar 21 11:53 index-0
+-rw-r--r-- 1 elasticsearch elasticsearch     8 Mar 21 11:53 index.latest
+drwxr-sr-x 6 elasticsearch elasticsearch  4096 Mar 21 11:53 indices
+-rw-r--r-- 1 elasticsearch elasticsearch 29240 Mar 21 11:53 meta-UFVOop3ESYGEq9VJpUHfcQ.dat
+-rw-r--r-- 1 elasticsearch elasticsearch   711 Mar 21 11:53 snap-UFVOop3ESYGEq9VJpUHfcQ.dat
+```
+
+- список индексов после удаления test и создания test-2:
+```BASH
+# curl -X GET "127.0.0.1:9200/_cat/indices/"
+green open test-2           1nHImMy5TWWujjxszYUCKw 1 0  0 0   227b   227b
+green open .geoip_databases LOiKcomCSrib0ntT2GVcJA 1 0 37 0 34.2mb 34.2mb
+```
+
+- запрос к API восстановления:
+```JSON
+# curl -X POST "127.0.0.1:9200/_snapshot/netology_backup/elk_snapshot/_restore?pretty" -H 'Content-Type: application/json' -d'
+{
+  "indices": "test"
+}
+'
+{
+  "accepted" : true
+}
+```
+
+- итоговый список индексов:
+```BASH
+# curl -X GET "127.0.0.1:9200/_cat/indices?pretty"
+green open test-2           1nHImMy5TWWujjxszYUCKw 1 0  0 0   227b   227b
+green open .geoip_databases LOiKcomCSrib0ntT2GVcJA 1 0 37 0 34.2mb 34.2mb
+green open test             cxuAaNdPSJa-nbMXOXVazA 1 0  0 0   227b   227b
+```
+
+
 ---
 
 ### Как cдавать задание
