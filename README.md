@@ -45,8 +45,8 @@
    "manifests": [
       {
          "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
-         "size": 1370,
-         "digest": "sha256:d5acde064ea9ba45414b8b7e7498e49f1abfc7c2952dd878fbf32840c58321c8",
+         "size": 1578,
+         "digest": "sha256:58265e52c95e47fc572f252362d61d3eaa4aa2fc4d48339f11257e649bdd7d90",
          "platform": {
             "architecture": "amd64",
             "os": "linux"
@@ -57,13 +57,20 @@
 ``` 
 
 - [ссылка](https://hub.docker.com/repository/docker/andaks/c7elk/general) на образ в репозитории dockerhub
+Для запуска контейнера и ластика в нем:
+```BASH
+# docker run -it -p 9200:9200 -p 9300:9300 --name c7elk -d andaks/c7elk:manifest-latest
+# docker exec -it c7elk bash
+# service elasticsearch start
+# Ctrl+D
+```
 
 - ответ `Elasticsearch` на запрос пути `/` в json-виде:
 ```JSON
 {
   "name" : "netology_test",
   "cluster_name" : "elasticsearch",
-  "cluster_uuid" : "dpzaD_4UTKmliZZiAV_Ypw",
+  "cluster_uuid" : "NVa2Xs2bTM6_clDmUO8Edw",
   "version" : {
     "number" : "7.17.18",
     "build_flavor" : "default",
